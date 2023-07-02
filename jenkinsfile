@@ -1,0 +1,78 @@
+pipeline {
+    environment {
+        registry = "kss7/python-jenkins"
+        registryCredential = 'docker-hub-login'
+        dockerImage = ''
+    }
+    agent any
+    
+    stages {
+        stage("build checkout") {
+            steps {
+                git 'https://github.com/najamsmart/portfolio.git'
+            }
+        }
+        stage("Build Image") {
+            steps {
+                script {
+                    img = registry + ":${env.BUILD_ID}"
+                    println("${img}")
+                    dockerImage = docker.build("${img}")
+                }
+            }
+        }
+        stage("Remove Old Container") {
+            steps {
+                script {
+                    def stopContainerCommand = "docker stop ${env.JOB_NAME} || true"
+                    def removeContainerCommand = "docker rm ${env.JOB_NAME} || true"
+                    sh(returnStatus: true, script: stopContainerCommand)
+                    sh(returnStatus: true, script: removeContainerCommand)
+                }
+            }
+        }
+        stage("Testing - running in Jenkins Node") {
+            steps {
+                sh("docker run -d --name ${JOB_NAME} -p 5555:5555 ${img}")
+            }
+        }
+        stage('Build and Push Image to DockerHub') {
+            steps {
+                script {
+                    def app = 'my_app'
+                    def tag = 'my_tag'
+                    def dockerUsername = 'smnajamhaq'
+                    def dockerPassword = '147963najam'
+                    def dockerImage = "${dockerUsername}/${app}:${tag}"
+        
+                    sh "echo ${dockerPassword} | docker login -u ${dockerUsername} --password-stdin"
+                    dockerImage = docker.build(dockerImage)
+                    dockerImage.push()
+                }
+            }
+        }
+
+        
+
+        stage("running in staging") {
+            steps {
+                script {
+                    def stopcontainer = "docker stop ${JOB_NAME}"
+                    def delcontName = "docker run ${JOB_NAME}"
+                    def delimages = 'docker image prune -a --force'
+                    def drun = "docker run -d --name ${JOB_NAME} -p 5555:5555 ${img}"
+                    sshagent(['docker-test']) {
+                        sh(returnStatus: true, script: "ssh -o StrictHostKeyChecking=no docker@3.87.251.137 ${stopcontainer}")
+                        sh(returnStatus: true, script: "ssh -o StrictHostKeyChecking=no docker@3.87.251.137 ${delcontName}")
+                        sh(returnStatus: true, script: "ssh -o StrictHostKeyChecking=no docker@3.87.251.137 ${delimages}")
+                        sh("ssh -o StrictHostKeyChecking=no docker@3.87.251.137 ${drun}")
+                        
+                        // some block
+                    }
+                }
+            }
+        }
+        
+        // ... rest of your pipeline stages
+    }
+}
