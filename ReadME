@@ -1,0 +1,62 @@
+# Flask Web App README
+
+This project consists of a simple Flask web application that allows users to submit their name, email and phone number via a web form. The data is then stored in a SQLite database for future reference.
+
+## Project structure
+
+FlaskApp
+templates
+index.html
+app.py
+user.db (SQLite Database)
+README.md (this file)
+
+
+## Getting Started
+
+### Requirements
+
+- Python 3.7+
+- Flask
+
+### Installation
+
+1. Clone this repository.
+    ```
+    git clone https://github.com/yourusername/flaskapp.git
+    ```
+
+2. Change directory into the cloned repository.
+    ```
+    cd flaskapp
+    ```
+
+3. Install the required Python packages.
+    ```
+    pip install -r requirements.txt
+    ```
+
+### Running the application
+
+1. After all prerequisites have been installed, you can run the application using python.
+    ```
+    python app.py
+    ```
+
+2. Visit the following URL in your web browser: `http://0.0.0.0:5555/`.
+
+## Usage
+
+The application displays a simple form in which users can submit their name, email, and phone number. The data is then stored in the SQLite database.
+
+## Acknowledgments
+
+- This project was created for learning purposes and does not come with any warranty or services.
+
+## Contribution
+
+Feel free to fork the project and make a pull request with your features, bug fixes, improvements, etc. All contributions are welcome.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details.
