@@ -5,10 +5,14 @@ This project consists of a simple Flask web application that allows users to sub
 ## Project structure
 
 FlaskApp
+static
+style.css
 templates
 index.html
 app.py
 user.db (SQLite Database)
+Dockerfile
+jenkinsfile
 README.md (this file)
 
 
@@ -23,7 +27,7 @@ README.md (this file)
 
 1. Clone this repository.
     ```
-    git clone https://github.com/yourusername/flaskapp.git
+    git clone https://github.com/najamsmart/portfolio.git
     ```
 
 2. Change directory into the cloned repository.
@@ -43,7 +47,7 @@ README.md (this file)
     python app.py
     ```
 
-2. Visit the following URL in your web browser: `http://0.0.0.0:5555/`.
+2. Visit the following URL in your web browser: `http://35.174.113.175:5555/`.
 
 ## Usage
 
